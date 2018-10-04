@@ -26,7 +26,10 @@ var keys = {
 /**
  * An array of image file paths to pre-load.
  */
-var preloadables = ['examples/images/player.png'];
+var preloadables = [
+  'examples/images/player.png',
+  'examples/images/background.png',
+];
 
 /**
  * A magic-named function where all updates should occur.
@@ -35,7 +38,7 @@ function update() {
   // move
   player.update();
   // enforce collision
-  player.collideSolid(tables);
+  player.collideSolid(level1);
 }
 
 /**
@@ -45,6 +48,7 @@ function draw() {
   // Draw a background. This is just for illustration so we can see scrolling.
   context.drawCheckered(80, 0, 0, world.width, world.height);
 
+  bkgd.draw();
   player.draw();
   level1.draw();
 }
@@ -96,4 +100,7 @@ function setup(first) {
     R: 'examples/images/table-right.png', // right table
     C: 'examples/images/chair.png' // chair
   });
+
+  bkgd = new Layer({src: 'examples/images/background.png'});
+  level1.draw(bkgd.context);
 }
