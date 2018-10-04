@@ -28,6 +28,40 @@ var keys = {
  */
 var preloadables = ['examples/images/player.png'];
 
+var enemies;
+
+var Enemy = Actor.extend({
+  MOVEAMOUNT: 100,
+  GRAVITY: false,
+  CONTINUOUS_MOVEMENT: true, // These enemies will just move back and forth
+  lastReversed: 0,
+  init: function () {
+    this._super.apply(this, arguments);
+    this.lastLooked = keys.right; // Start off moving right
+    this.src = new SpriteMap('../../../examples/images/centipede.png', {
+      stand: [0, 13, 0, 13],
+      left: [0, 0, 0, 12, false, { horizontal: true, vertical: false }],
+      right: [0, 0, 0, 12],
+    }, {
+        frameW: 52,
+        frameH: 52,
+        interval: 75,
+        useTimer: false,
+      });
+  },
+  /**
+   * Switch direction.
+   */
+  reverse: function () {
+    // To avoid any edge cases of endless reversal, add a minimum delay.
+    var now = Date.now();
+    if (now > this.lastReversed + this.width) {
+      this.lastReversed = now;
+      this.lastLooked = App.Utils.anyIn(keys.right, this.lastLooked) ? keys.left : keys.right;
+    }
+  },
+});
+
 /**
  * A magic-named function where all updates should occur.
  */
@@ -36,6 +70,28 @@ function update() {
   player.update();
   // enforce collision
   player.collideSolid(solid);
+
+  enemies.forEach(function (enemy) {
+    // Reverse if we get to the edge of a platform.
+    if (!enemy.standingOn(solid) &&
+      (!enemy.STAY_IN_WORLD || enemy.y != world.height - enemy.height)) {
+      enemy.reverse();
+    }
+    enemy.update();
+    // Reverse if we run into a wall.
+    if (enemy.collideSolid(solid).x) {
+      enemy.reverse();
+    }
+    // Reverse if we run into the side of the world.
+    else if (enemy.STAY_IN_WORLD &&
+      (enemy.x < 0 || enemy.x + enemy.width >= world.width)) {
+      enemy.reverse();
+    }
+    // The player dies if it touches an enemy.
+    if (enemy.collides(player)) {
+      App.gameOver();
+    }
+  });
 }
 
 /**
@@ -47,6 +103,7 @@ function draw() {
 
   player.draw();
   solid.draw();
+  enemies.draw();
 }
 
 /**
@@ -92,8 +149,20 @@ function setup(first) {
 
   // Add terrain.
   var grid =
-    "         B      BB        \n" +
-    "              BBBBBB      \n" +
-    "      BB    BBBBBBBBBB  BB";
-  solid = new TileMap(grid, { B: Box });
+    "         B      BB           \n" +
+    "              BBBBBB  E      \n" +
+    "      BB    BBBBBBBBBBBBB  BB";
+  solid = new TileMap(grid, {
+    B: Box,
+    E: Enemy,
+  });
+
+  enemies = new Collection();
+
+  solid.forEach(function (o, i, j) {
+    if (o instanceof Enemy) {
+      solid.clearCell(i, j);
+      enemies.add(o);
+    }
+  });
 }
