@@ -357,7 +357,7 @@ function setup(first) {
   hud.context.fillStyle = 'black';
   hud.context.strokeStyle = 'rgba(211, 211, 211, 0.5)';
   hud.context.lineWidth = 3;
-  hud.context.strokeText('Score: 0', canvas.width - 15, 15);
+  hud.context.strokeText('Score: 1', canvas.width - 15, 15);
   hud.context.fillText('Score: 0', canvas.width - 15, 15);
 
   // Track the score.
