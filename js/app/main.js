@@ -29,6 +29,7 @@ var keys = {
 var preloadables = [
   'examples/images/player.png',
   'examples/images/background.png',
+  'examples/images/the-game-fox-single.png',
 ];
 
 /**
@@ -95,13 +96,8 @@ function setup(first) {
   var grid =
     "                          \n" +
     "                          \n" +
-<<<<<<< HEAD
-    " C    LRC      CLRC       ";
-  level1 = new TileMap(grid, {
-=======
     " C    LRC  K   CLRC       ";
   level1 = new TileMap(grid, { 
->>>>>>> 075eb0b21fe381c6692bd378db2a1844cfd9abe9
     L: 'examples/images/table-left.png', // left table
     R: 'examples/images/table-right.png', // right table
     C: 'examples/images/chair.png', // chair
@@ -113,10 +109,12 @@ function setup(first) {
 
   hud = new Layer({ relative: 'canvas' });
   hud.context.font = '30px Arial';
-  hud.context.textAlign = 'left';
+  hud.context.textAlign = 'right';
   hud.context.textBaseline = 'top';
   hud.context.fillStyle = 'black';
   hud.context.strokeStyle = 'rgba(211, 211, 211, 0.5)';
   hud.context.lineWidth = 3;
-  hud.context.drawImage('examples/images/the-game-fox-single.png', 15, 15);
+  hud.context.strokeText('x 0', canvas.width - 30, 15);
+  hud.context.fillText('x 0', canvas.width - 30, 15);
+  hud.context.drawImage('examples/images/the-game-fox-single.png', canvas.width - 115, 15);
 }
