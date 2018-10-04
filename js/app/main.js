@@ -26,7 +26,11 @@ var keys = {
 /**
  * An array of image file paths to pre-load.
  */
-var preloadables = ['examples/images/player.png'];
+var preloadables = [
+  'examples/images/player.png',
+  'examples/images/background.png',
+  'examples/images/the-game-fox-single.png',
+];
 
 var enemies;
 
@@ -69,8 +73,6 @@ function update() {
   // move
   player.update();
   // enforce collision
-  player.collideSolid(solid);
-
   enemies.forEach(function (enemy) {
     // Reverse if we get to the edge of a platform.
     if (!enemy.standingOn(solid) &&
@@ -92,6 +94,9 @@ function update() {
       App.gameOver();
     }
   });
+
+  player.collideSolid(level1);
+
 }
 
 /**
@@ -101,9 +106,11 @@ function draw() {
   // Draw a background. This is just for illustration so we can see scrolling.
   context.drawCheckered(80, 0, 0, world.width, world.height);
 
+  bkgd.draw();
   player.draw();
-  solid.draw();
   enemies.draw();
+  level1.draw();
+  hud.draw();
 }
 
 /**
@@ -114,10 +121,6 @@ function draw() {
  *   been reset and is starting over.
  */
 function setup(first) {
-  console.log('canvas.width: ', canvas.width);
-  console.log('canvas.height: ', canvas.height);
-  console.log('world.width: ', world.width);
-  console.log('world.height: ', world.height);
 
   // Change the size of the playable area. Do this before placing items!
   world.resize(canvas.width + 1200, canvas.height);
@@ -149,14 +152,10 @@ function setup(first) {
 
   // Add terrain.
   var grid =
-    "         B      BB           \n" +
-    "              BBBBBB  E      \n" +
-    "      BB    BBBBBBBBBBBBB  BB";
-  solid = new TileMap(grid, {
-    B: Box,
-    E: Enemy,
-  });
-
+    "                          \n" +
+    "                          \n" +
+    " C    LRC  K   CLRC E     ";
+  
   enemies = new Collection();
 
   solid.forEach(function (o, i, j) {
@@ -165,4 +164,26 @@ function setup(first) {
       enemies.add(o);
     }
   });
+  
+  level1 = new TileMap(grid, { 
+    L: 'examples/images/table-left.png', // left table
+    R: 'examples/images/table-right.png', // right table
+    C: 'examples/images/chair.png', // chair
+    K: 'examples/images/ibrik.png',
+    E: Enemy,
+  });
+
+  bkgd = new Layer({ src: 'examples/images/background.png' });
+  level1.draw(bkgd.context);
+
+  hud = new Layer({ relative: 'canvas' });
+  hud.context.font = '30px Arial';
+  hud.context.textAlign = 'right';
+  hud.context.textBaseline = 'top';
+  hud.context.fillStyle = 'black';
+  hud.context.strokeStyle = 'rgba(211, 211, 211, 0.5)';
+  hud.context.lineWidth = 3;
+  hud.context.strokeText('x 0', canvas.width - 30, 15);
+  hud.context.fillText('x 0', canvas.width - 30, 15);
+  hud.context.drawImage('examples/images/the-game-fox-single.png', canvas.width - 115, 15);
 }
