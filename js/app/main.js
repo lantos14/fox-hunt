@@ -35,7 +35,7 @@ function update() {
   // move
   player.update();
   // enforce collision
-  player.collideSolid(solid);
+  player.collideSolid(tables);
 }
 
 /**
@@ -46,7 +46,7 @@ function draw() {
   context.drawCheckered(80, 0, 0, world.width, world.height);
 
   player.draw();
-  solid.draw();
+  level1.draw();
 }
 
 /**
@@ -57,10 +57,6 @@ function draw() {
  *   been reset and is starting over.
  */
 function setup(first) {
-  console.log('canvas.width: ', canvas.width);
-  console.log('canvas.height: ', canvas.height);
-  console.log('world.width: ', world.width);
-  console.log('world.height: ', world.height);
 
   // Change the size of the playable area. Do this before placing items!
   world.resize(canvas.width + 1200, canvas.height);
@@ -92,8 +88,12 @@ function setup(first) {
 
   // Add terrain.
   var grid =
-    "         B      BB        \n" +
-    "              BBBBBB      \n" +
-    "      BB    BBBBBBBBBB  BB";
-  solid = new TileMap(grid, { B: Box });
+    "                          \n" +
+    "                          \n" +
+    " C    LRC      CLRC       ";
+  level1 = new TileMap(grid, { 
+    L: 'examples/images/table-left.png', // left table
+    R: 'examples/images/table-right.png', // right table
+    C: 'examples/images/chair.png' // chair
+  });
 }
