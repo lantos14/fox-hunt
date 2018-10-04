@@ -152,14 +152,6 @@ function setup(first) {
   var grid =
     "                          \n" +
     "                          \n" +
-<<<<<<< HEAD
-    " C    LRC  K   CLRC       ";
-  level1 = new TileMap(grid, {
-    L: 'examples/images/table-left.png', // left table
-    R: 'examples/images/table-right.png', // right table
-    C: 'examples/images/chair.png', // chair
-    K: 'examples/images/ibrik.png'
-=======
     " C    LRC  K   CLRC E     ";
   
     level1 = new TileMap(grid, { 
@@ -177,7 +169,6 @@ function setup(first) {
       level1.clearCell(i, j);
       enemies.add(o);
     }
->>>>>>> 19cf52844d91b3cf36f743f0cae4101f933b0038
   });
   
 
