@@ -51,6 +51,7 @@ function draw() {
   bkgd.draw();
   player.draw();
   level1.draw();
+  hud.draw();
 }
 
 /**
@@ -95,12 +96,21 @@ function setup(first) {
     "                          \n" +
     "                          \n" +
     " C    LRC      CLRC       ";
-  level1 = new TileMap(grid, { 
+  level1 = new TileMap(grid, {
     L: 'examples/images/table-left.png', // left table
     R: 'examples/images/table-right.png', // right table
     C: 'examples/images/chair.png' // chair
   });
 
-  bkgd = new Layer({src: 'examples/images/background.png'});
+  bkgd = new Layer({ src: 'examples/images/background.png' });
   level1.draw(bkgd.context);
+
+  hud = new Layer({ relative: 'canvas' });
+  hud.context.font = '30px Arial';
+  hud.context.textAlign = 'left';
+  hud.context.textBaseline = 'top';
+  hud.context.fillStyle = 'black';
+  hud.context.strokeStyle = 'rgba(211, 211, 211, 0.5)';
+  hud.context.lineWidth = 3;
+  hud.context.drawImage('examples/images/the-game-fox-single.png', 15, 15);
 }
