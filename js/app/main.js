@@ -73,21 +73,19 @@ function setup(first) {
   // Initialize the player.
   // Notice the two new parameters to Player(); they are width and height.
   // We're changing the player's dimensions to match the width:height ratio of the image.
-  player = new Player(200, 200, 60, 80);
+  player = new Player(200, 200, 80, 60);
   // Initialize the SpriteMap by giving it an image file, a map of animation sequences, and settings.
-  player.src = new SpriteMap('examples/images/player.png', {
-    stand: [0, 5, 0, 5],
-    fall: [0, 5, 1, 5, true],
-    left: [0, 0, 0, 4],
-    right: [1, 0, 1, 4],
-    lookLeft: [0, 2, 0, 2],
-    lookRight: [1, 2, 1, 2],
-    jumpLeft: [0, 4, 0, 4],
-    jumpRight: [1, 4, 1, 4],
-    // More animation loops omitted for brevity...
+  player.src = new SpriteMap('examples/images/pixel-norlandia.png', {
+    stand: [0, 1, 0, 1],
+    left: [0, 2, 0, 3],
+    right: [0, 0, 0, 1],
+    lookLeft: [0, 3, 0, 3],
+    lookRight: [0, 1, 0, 1],
+    jumpLeft: [0, 2, 0, 3],
+    jumpRight: [0, 0, 0, 1],
   }, {
-      frameW: 30, // frame width
-      frameH: 40, // frame height
+      frameW: 15, // frame width
+      frameH: 20, // frame height
       interval: 75, // time delay between switching frames
       useTimer: false, // use the animation cycle instead of a setInterval() timer to update frames
     });
@@ -97,14 +95,14 @@ function setup(first) {
     "                          \n" +
     "                          \n" +
     " C    LRC  K   CLRC       ";
-  level1 = new TileMap(grid, { 
+  level1 = new TileMap(grid, {
     L: 'examples/images/table-left.png', // left table
     R: 'examples/images/table-right.png', // right table
     C: 'examples/images/chair.png', // chair
     K: 'examples/images/ibrik.png'
   });
 
-  bkgd = new Layer({ src: 'examples/images/background.png' });
+  bkgd = new Layer({ src: 'examples/images/background.png', parallax: 50 });
   level1.draw(bkgd.context);
 
   hud = new Layer({ relative: 'canvas' });
