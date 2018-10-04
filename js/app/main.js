@@ -32,6 +32,40 @@ var preloadables = [
   'examples/images/the-game-fox-single.png',
 ];
 
+var enemies;
+
+var Enemy = Actor.extend({
+  MOVEAMOUNT: 100,
+  GRAVITY: false,
+  CONTINUOUS_MOVEMENT: true, // These enemies will just move back and forth
+  lastReversed: 0,
+  init: function () {
+    this._super.apply(this, arguments);
+    this.lastLooked = keys.right; // Start off moving right
+    this.src = new SpriteMap('../../../examples/images/centipede.png', {
+      stand: [0, 13, 0, 13],
+      left: [0, 0, 0, 12, false, { horizontal: true, vertical: false }],
+      right: [0, 0, 0, 12],
+    }, {
+        frameW: 52,
+        frameH: 52,
+        interval: 75,
+        useTimer: false,
+      });
+  },
+  /**
+   * Switch direction.
+   */
+  reverse: function () {
+    // To avoid any edge cases of endless reversal, add a minimum delay.
+    var now = Date.now();
+    if (now > this.lastReversed + this.width) {
+      this.lastReversed = now;
+      this.lastLooked = App.Utils.anyIn(keys.right, this.lastLooked) ? keys.left : keys.right;
+    }
+  },
+});
+
 /**
  * A magic-named function where all updates should occur.
  */
@@ -39,7 +73,30 @@ function update() {
   // move
   player.update();
   // enforce collision
+  enemies.forEach(function (enemy) {
+    // Reverse if we get to the edge of a platform.
+    if (!enemy.standingOn(level1) &&
+      (!enemy.STAY_IN_WORLD || enemy.y != world.height - enemy.height)) {
+      enemy.reverse();
+    }
+    enemy.update();
+    // Reverse if we run into a wall.
+    if (enemy.collideSolid(level1).x) {
+      enemy.reverse();
+    }
+    // Reverse if we run into the side of the world.
+    else if (enemy.STAY_IN_WORLD &&
+      (enemy.x < 0 || enemy.x + enemy.width >= world.width)) {
+      enemy.reverse();
+    }
+    // The player dies if it touches an enemy.
+    if (enemy.collides(player)) {
+      App.gameOver();
+    }
+  });
+
   player.collideSolid(level1);
+
 }
 
 /**
@@ -51,6 +108,7 @@ function draw() {
 
   bkgd.draw();
   player.draw();
+  enemies.draw();
   level1.draw();
   hud.draw();
 }
@@ -94,13 +152,34 @@ function setup(first) {
   var grid =
     "                          \n" +
     "                          \n" +
+<<<<<<< HEAD
     " C    LRC  K   CLRC       ";
   level1 = new TileMap(grid, {
     L: 'examples/images/table-left.png', // left table
     R: 'examples/images/table-right.png', // right table
     C: 'examples/images/chair.png', // chair
     K: 'examples/images/ibrik.png'
+=======
+    " C    LRC  K   CLRC E     ";
+  
+    level1 = new TileMap(grid, { 
+      L: 'examples/images/table-left.png', // left table
+      R: 'examples/images/table-right.png', // right table
+      C: 'examples/images/chair.png', // chair
+      K: 'examples/images/ibrik.png',
+      E: Enemy,
+    });
+
+  enemies = new Collection();
+
+  level1.forEach(function (o, i, j) {
+    if (o instanceof Enemy) {
+      level1.clearCell(i, j);
+      enemies.add(o);
+    }
+>>>>>>> 19cf52844d91b3cf36f743f0cae4101f933b0038
   });
+  
 
   bkgd = new Layer({ src: 'examples/images/background.png', parallax: 50 });
   level1.draw(bkgd.context);
