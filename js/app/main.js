@@ -95,11 +95,17 @@ function setup(first) {
   var grid =
     "                          \n" +
     "                          \n" +
+<<<<<<< HEAD
     " C    LRC      CLRC       ";
   level1 = new TileMap(grid, {
+=======
+    " C    LRC  K   CLRC       ";
+  level1 = new TileMap(grid, { 
+>>>>>>> 075eb0b21fe381c6692bd378db2a1844cfd9abe9
     L: 'examples/images/table-left.png', // left table
     R: 'examples/images/table-right.png', // right table
-    C: 'examples/images/chair.png' // chair
+    C: 'examples/images/chair.png', // chair
+    K: 'examples/images/ibrik.png'
   });
 
   bkgd = new Layer({ src: 'examples/images/background.png' });
