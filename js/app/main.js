@@ -75,13 +75,13 @@ function update() {
   // enforce collision
   enemies.forEach(function (enemy) {
     // Reverse if we get to the edge of a platform.
-    if (!enemy.standingOn(solid) &&
+    if (!enemy.standingOn(level1) &&
       (!enemy.STAY_IN_WORLD || enemy.y != world.height - enemy.height)) {
       enemy.reverse();
     }
     enemy.update();
     // Reverse if we run into a wall.
-    if (enemy.collideSolid(solid).x) {
+    if (enemy.collideSolid(level1).x) {
       enemy.reverse();
     }
     // Reverse if we run into the side of the world.
@@ -156,22 +156,23 @@ function setup(first) {
     "                          \n" +
     " C    LRC  K   CLRC E     ";
   
+    level1 = new TileMap(grid, { 
+      L: 'examples/images/table-left.png', // left table
+      R: 'examples/images/table-right.png', // right table
+      C: 'examples/images/chair.png', // chair
+      K: 'examples/images/ibrik.png',
+      E: Enemy,
+    });
+
   enemies = new Collection();
 
-  solid.forEach(function (o, i, j) {
+  level1.forEach(function (o, i, j) {
     if (o instanceof Enemy) {
-      solid.clearCell(i, j);
+      level1.clearCell(i, j);
       enemies.add(o);
     }
   });
   
-  level1 = new TileMap(grid, { 
-    L: 'examples/images/table-left.png', // left table
-    R: 'examples/images/table-right.png', // right table
-    C: 'examples/images/chair.png', // chair
-    K: 'examples/images/ibrik.png',
-    E: Enemy,
-  });
 
   bkgd = new Layer({ src: 'examples/images/background.png' });
   level1.draw(bkgd.context);
