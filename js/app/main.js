@@ -28,8 +28,9 @@ var keys = {
  */
 var preloadables = [
   'examples/images/player.png',
-  'examples/images/background.png',
+  'examples/images/pixel-gfa-wall-lg.png',
   'examples/images/the-game-fox-single.png',
+  'examples/images/centipede.png',
 ];
 
 var enemies;
@@ -42,7 +43,7 @@ var Enemy = Actor.extend({
   init: function () {
     this._super.apply(this, arguments);
     this.lastLooked = keys.right; // Start off moving right
-    this.src = new SpriteMap('../../../examples/images/centipede.png', {
+    this.src = new SpriteMap('examples/images/centipede.png', {
       stand: [0, 13, 0, 13],
       left: [0, 0, 0, 12, false, { horizontal: true, vertical: false }],
       right: [0, 0, 0, 12],
@@ -155,9 +156,9 @@ function setup(first) {
     " C    LRC  K   CLRC E     ";
   
     level1 = new TileMap(grid, { 
-      L: 'examples/images/table-left.png', // left table
-      R: 'examples/images/table-right.png', // right table
-      C: 'examples/images/chair.png', // chair
+      L: 'examples/images/table-left.png',
+      R: 'examples/images/table-right.png', 
+      C: 'examples/images/pixel-chair.png',
       K: 'examples/images/ibrik.png',
       E: Enemy,
     });
@@ -172,7 +173,7 @@ function setup(first) {
   });
   
 
-  bkgd = new Layer({ src: 'examples/images/background.png', parallax: 50 });
+  bkgd = new Layer({ src: 'examples/images/pixel-gfa-wall-lg.png' });
   level1.draw(bkgd.context);
 
   hud = new Layer({ relative: 'canvas' });
