@@ -153,11 +153,11 @@ function setup(first) {
   var grid =
     "                          \n" +
     "                          \n" +
-    " C    LRC  K   CLRC E     ";
+    " C      CLTK   CLTC E     ";
   
     level1 = new TileMap(grid, { 
-      L: 'examples/images/table-left.png',
-      R: 'examples/images/table-right.png', 
+      L: 'examples/images/pixel-table.png',
+      T: 'examples/images/pixel-table-empty.png',
       C: 'examples/images/pixel-chair.png',
       K: 'examples/images/ibrik.png',
       E: Enemy,
