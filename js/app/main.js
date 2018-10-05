@@ -30,7 +30,7 @@ var preloadables = [
   'examples/images/player.png',
   'examples/images/pixel-gfa-wall-lg.png',
   'examples/images/the-game-fox-single.png',
-  'examples/images/centipede.png',
+  'examples/images/pixel-hotdog.png',
 ];
 
 var enemies;
@@ -43,13 +43,13 @@ var Enemy = Actor.extend({
   init: function () {
     this._super.apply(this, arguments);
     this.lastLooked = keys.right; // Start off moving right
-    this.src = new SpriteMap('examples/images/centipede.png', {
-      stand: [0, 13, 0, 13],
-      left: [0, 0, 0, 12, false, { horizontal: true, vertical: false }],
-      right: [0, 0, 0, 12],
+    this.src = new SpriteMap('examples/images/pixel-hotdog.png', {
+      stand: [0, 0, 0, 0],
+      left: [0, 0, 0, 14],
+      right: [0, 0, 0, 14, false, {horizontal: true, vertical: false}],
     }, {
-        frameW: 52,
-        frameH: 52,
+        frameW: 255,
+        frameH: 219,
         interval: 75,
         useTimer: false,
       });
@@ -153,7 +153,7 @@ function setup(first) {
   var grid =
     "                          \n" +
     "                          \n" +
-    " C      CLTK   CLTC E     ";
+    " C  E   CLTK E CLTC E     ";
   
     level1 = new TileMap(grid, { 
       L: 'examples/images/pixel-table.png',
